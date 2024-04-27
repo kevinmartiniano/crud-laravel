@@ -17,3 +17,12 @@ composer-install:
 
 test:
 	vendor/bin/sail test
+
+test-filter:
+	vendor/bin/sail test --filter=$(filter)
+
+bash:
+	docker exec -it crud-laravel-laravel.test-1 sh
+
+run:
+	docker exec -it crud-laravel-laravel.test-1 $(exec)
