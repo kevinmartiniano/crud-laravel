@@ -18,7 +18,7 @@ return new class extends Migration
             $table->string('company');
             $table->string('phone_number', 13);
             $table->string('mobile_number', 14);
-            $table->string('mail');
+            $table->string('email');
             $table->date('birth_date');
             $table->softDeletes();
             $table->timestamps();

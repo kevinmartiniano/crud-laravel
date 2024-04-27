@@ -19,7 +19,7 @@ class Contact extends Model
         'company',
         'phone_number',
         'mobile_number',
-        'mail',
+        'email',
         'birth_date',
     ];
 }
