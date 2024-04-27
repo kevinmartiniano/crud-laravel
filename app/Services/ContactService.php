@@ -4,6 +4,7 @@ namespace App\Services;
 
 use App\Models\Contact;
 use App\Repositories\Contracts\ContactRepository;
+use Illuminate\Database\Eloquent\Collection;
 
 class ContactService
 {
@@ -16,5 +17,10 @@ class ContactService
     public function findContact(int $id): ?Contact
     {
         return $this->contactRepository->find($id);
+    }
+
+    public function findByArgs(array $args): ?Collection
+    {
+        return $this->contactRepository->where($args);
     }
 }
