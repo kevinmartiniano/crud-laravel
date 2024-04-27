@@ -9,9 +9,9 @@ interface ContactRepository
 {
     /**
      * @param int $id record identifier
-     * @return \App\Models\Contact
+     * @return \App\Models\Contact|null
      */
-    public function find(int $id): Contact;
+    public function find(int $id): ?Contact;
 
     /**
      * @param array $data some arguments to find records
