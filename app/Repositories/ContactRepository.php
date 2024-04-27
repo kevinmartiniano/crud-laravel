@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Collection;
 
 class ContactRepository implements Contract
 {
-    public function find(int $id): Contact
+    public function find(int $id): ?Contact
     {
         return Contact::find($id);
     }
