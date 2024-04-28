@@ -14,7 +14,7 @@ class FindContactRequest extends FormRequest
     public function rules(): array
     {
         $this->merge([
-            'id' => $this->route('id')
+            'id' => $this->route('id'),
         ]);
 
         return [
