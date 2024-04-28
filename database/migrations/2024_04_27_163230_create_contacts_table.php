@@ -16,8 +16,8 @@ return new class extends Migration
             $table->string('first_name', 50);
             $table->string('last_name');
             $table->string('company');
-            $table->string('phone_number', 13);
-            $table->string('mobile_number', 14);
+            $table->string('phone_number', 15);
+            $table->string('mobile_number', 15);
             $table->string('email');
             $table->date('birth_date');
             $table->softDeletes();
