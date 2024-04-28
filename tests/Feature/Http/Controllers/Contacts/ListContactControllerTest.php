@@ -42,4 +42,20 @@ class ListContactControllerTest extends TestCase
             ],
         ]);
     }
+
+    public function testShouldRequestGetAndReturnFilteredListContact(): void
+    {
+        $contacts = Contact::factory(2)->create();
+
+        $response = $this->get(sprintf('/contacts?first_name=%s', $contacts->first()->first_name), [
+            'Content-Type' => 'application/json',
+        ]);
+
+        $response->assertStatus(Response::HTTP_OK);
+        $response->assertExactJson([
+            'data' => [
+                $contacts->first()->toArray(),
+            ],
+        ]);
+    }
 }
