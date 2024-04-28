@@ -53,11 +53,11 @@ class ContactServiceTest extends TestCase
     }
 
     #[DataProvider('findListResult')]
-    public function testShouldSearchContactsByWhere(array $args, ?Collection $contacts): void
+    public function testShouldSearchContactsByWhere(?array $args, ?Collection $contacts): void
     {
         $this->repository
             ->shouldReceive('where')
-            ->with($args)
+            ->with($args ?? [])
             ->andReturn($contacts)
             ->once();
 
@@ -104,6 +104,10 @@ class ContactServiceTest extends TestCase
                     'company' => $companyName,
                     'email' => $email,
                 ]),
+            ],
+            'find contacts empty arguments' => [
+                'args' => null,
+                'contacts' => Contact::factory($faker->randomDigitNotNull())->make(),
             ],
         ];
     }

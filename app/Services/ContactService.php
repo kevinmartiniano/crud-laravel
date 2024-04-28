@@ -19,8 +19,8 @@ class ContactService
         return $this->contactRepository->find($id);
     }
 
-    public function findByArgs(array $args): ?Collection
+    public function findByArgs(?array $args): ?Collection
     {
-        return $this->contactRepository->where($args);
+        return $this->contactRepository->where($args ?? []);
     }
 }
