@@ -31,6 +31,7 @@ class ContactFactory extends Factory
             'mobile_number' => fake()->phoneNumber(),
             'email' => fake()->unique()->safeEmail(),
             'birth_date' => fake()->date('Y-m-d', 'now'),
+            'deleted_at' => null,
         ];
     }
 }
