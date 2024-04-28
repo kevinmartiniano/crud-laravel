@@ -18,10 +18,10 @@ class ListContactController extends Controller
 
     public function __invoke(Request $request): JsonResponse
     {
-        $args = $request->all() !== [] ? $request->all() : null;
-
         return new JsonResponse([
-            'data' => $this->service->findByArgs($args)->toArray()
+            'data' => $this->service->findByArgs(
+                $request->all()
+            )->toArray()
         ], Response::HTTP_OK);
     }
 }

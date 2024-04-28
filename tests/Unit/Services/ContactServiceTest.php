@@ -28,7 +28,7 @@ class ContactServiceTest extends TestCase
         $this->service = new ContactService($this->repository);
     }
 
-    #[DataProvider('simpleFindResult')]
+    #[DataProvider('findSimpleResult')]
     public function testShouldSearchContactById(?Contact $contact): void
     {
         $id = $this->faker->randomDigitNotNull();
@@ -53,11 +53,11 @@ class ContactServiceTest extends TestCase
     }
 
     #[DataProvider('findListResult')]
-    public function testShouldSearchContactsByWhere(?array $args, ?Collection $contacts): void
+    public function testShouldSearchContactsByWhere(array $args, ?Collection $contacts): void
     {
         $this->repository
             ->shouldReceive('where')
-            ->with($args ?? [])
+            ->with($args)
             ->andReturn($contacts)
             ->once();
 
@@ -66,7 +66,7 @@ class ContactServiceTest extends TestCase
         $this->assertInstanceOf(Collection::class, $response);
     }
 
-    public static function simpleFindResult(): array
+    public static function findSimpleResult(): array
     {
         return [
             'find contact by id and return contact record' => [
@@ -106,7 +106,7 @@ class ContactServiceTest extends TestCase
                 ]),
             ],
             'find contacts empty arguments' => [
-                'args' => null,
+                'args' => [],
                 'contacts' => Contact::factory($faker->randomDigitNotNull())->make(),
             ],
         ];
