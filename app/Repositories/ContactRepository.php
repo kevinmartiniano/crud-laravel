@@ -16,6 +16,6 @@ class ContactRepository implements Contract
     public function where(array $data): Collection
     {
         return Contact::where($data)
-            ->all();
+            ->get();
     }
 }
