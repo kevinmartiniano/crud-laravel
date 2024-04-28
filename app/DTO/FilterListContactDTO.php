@@ -3,7 +3,6 @@
 namespace App\DTO;
 
 use App\DTO\Contracts\FilterListContactDTO as Contract;
-use App\Traits\ToArray;
 
 class FilterListContactDTO implements Contract
 {
