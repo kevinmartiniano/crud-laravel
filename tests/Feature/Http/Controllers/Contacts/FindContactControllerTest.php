@@ -22,6 +22,7 @@ class FindContactControllerTest extends TestCase
         $contact = Contact::factory()->create();
 
         $response = $this->get(sprintf('/contacts/%s', $contact->id), [
+            'Accept' => 'application/json',
             'Content-Type' => 'application/json',
         ]);
 
@@ -49,6 +50,7 @@ class FindContactControllerTest extends TestCase
     public function testShouldReceiveIdentifierAndReturnNotFound(): void
     {
         $response = $this->get(sprintf('/contacts/%s', $this->faker->randomNumber(1)), [
+            'Accept' => 'application/json',
             'Content-Type' => 'application/json',
         ]);
 
@@ -81,9 +83,20 @@ class FindContactControllerTest extends TestCase
             ->once();
 
         $response = $this->get(sprintf('/contacts/%s', $id), [
+            'Accept' => 'application/json',
             'Content-Type' => 'application/json',
         ]);
 
         $response->assertStatus(Response::HTTP_INTERNAL_SERVER_ERROR);
+    }
+
+    public function testShouldReceiveIdentifierAndReturnUnprocessableEntity(): void
+    {
+        $response = $this->get(sprintf('/contacts/%s', $this->faker->word()), [
+            'Accept' => 'application/json',
+            'Content-Type' => 'application/json',
+        ]);
+
+        $response->assertStatus(Response::HTTP_UNPROCESSABLE_ENTITY);
     }
 }

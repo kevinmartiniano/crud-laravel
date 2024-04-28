@@ -3,10 +3,10 @@
 namespace App\Http\Controllers\Contacts;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\FindContactRequest;
 use App\Models\Contact;
 use App\Services\ContactService;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Log;
 use Throwable;
@@ -19,7 +19,7 @@ class FindContactController extends Controller
     {
     }
 
-    public function __invoke(Request $request): JsonResponse
+    public function __invoke(FindContactRequest $request): JsonResponse
     {
         try {
             $contact = $this->service->findContact($request->route('id'));
