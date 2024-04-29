@@ -2,9 +2,11 @@
 
 namespace Tests\Unit\Services;
 
+use App\DTO\ContactDTO;
 use App\Models\Contact;
 use App\Repositories\ContactRepository;
 use App\Services\ContactService;
+use Carbon\Carbon;
 use Faker\Factory;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Foundation\Testing\WithFaker;
@@ -64,6 +66,31 @@ class ContactServiceTest extends TestCase
         $response = $this->service->findByArgs($args);
 
         $this->assertInstanceOf(Collection::class, $response);
+    }
+
+    public function testShouldReceiveArrayArgumentsAndReturnContact(): void
+    {
+        $contact = Contact::factory()->make();
+
+        $contactDTO = new ContactDTO(
+            $contact->first_name,
+            $contact->last_name,
+            $contact->company,
+            $contact->phone_number,
+            $contact->mobile_number,
+            $contact->email,
+            Carbon::parse($contact->birth_date),
+        );
+
+        $this->repository
+            ->shouldReceive('create')
+            ->withArgs(function ($args) use ($contactDTO) {
+                return $args->toArray() === $contactDTO->toArray();
+            })
+            ->andReturn($contact)
+            ->once();
+
+        $this->service->createContact($contactDTO->toArray());
     }
 
     public static function findSimpleResult(): array
