@@ -3,9 +3,12 @@
 namespace Tests\Feature\Controllers\Contacts;
 
 use App\Models\Contact;
+use App\Services\ContactService;
+use Exception;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Support\Facades\Log;
+use Mockery;
 use Symfony\Component\HttpFoundation\Response;
 use Tests\TestCase;
 
@@ -54,22 +57,33 @@ class CreateContactControllerTest extends TestCase
     public function testShouldRequestCreateEmptyRequiredFieldAndReturnErrorStatus(): void
     {
         $contact = Contact::factory()->make();
-        $contact->first_name = null;
 
         $headers = [
             'Accept' => 'application/json',
             'Content-Type' => 'application/json',
         ];
 
+        
+        $exception = new Exception();
+
+        $service = Mockery::mock(ContactService::class)->makePartial();
+        $service->shouldReceive('createContact')
+            ->with($contact->toArray())
+            ->andThrows($exception)
+            ->once();
+        
+        $this->app->instance(ContactService::class, $service);
+
         Log::shouldReceive('error')
-            ->withArgs(function ($message, $context) {
-                return 
-                    $message === 'error_create_contact_controller' &&
-                    array_key_exists('message', $context) &&
-                    array_key_exists('stack_trace', $context) &&
-                    array_key_exists('file', $context) &&
-                    array_key_exists('line', $context);
-            })
+            ->with(
+                'error_create_contact_controller',
+                [
+                    'message' => $exception->getMessage(),
+                    'stack_trace' => $exception->getTraceAsString(),
+                    'file' => $exception->getFile(),
+                    'line' => $exception->getLine(),
+                ]
+            )
             ->once();
 
         $response = $this->postJson(
@@ -81,5 +95,24 @@ class CreateContactControllerTest extends TestCase
         $response->assertStatus(Response::HTTP_INTERNAL_SERVER_ERROR);
 
         $this->assertDatabaseMissing('contacts', $contact->toArray());
+    }
+
+    public function testShouldRequestCreateEmptyRequiredFieldAndReceiveUnprocessableEntity(): void
+    {
+        $contact = Contact::factory()->make();
+        $contact->first_name = null;
+
+        $headers = [
+            'Accept' => 'application/json',
+            'Content-Type' => 'application/json',
+        ];
+
+        $response = $this->postJson(
+            '/contacts',
+            $contact->toArray(),
+            $headers
+        );
+
+        $response->assertStatus(Response::HTTP_UNPROCESSABLE_ENTITY);
     }
 }
