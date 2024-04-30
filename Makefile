@@ -26,3 +26,6 @@ bash:
 
 run:
 	docker exec -it crud-laravel-laravel.test-1 $(exec)
+
+cs-fixer:
+	docker exec -it crud-laravel-laravel.test-1 ./vendor/bin/php-cs-fixer fix $(directory) -v --diff
