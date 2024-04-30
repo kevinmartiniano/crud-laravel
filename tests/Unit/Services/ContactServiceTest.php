@@ -64,7 +64,6 @@ class ContactServiceTest extends TestCase
             ->once();
 
         $response = $this->service->findByArgs($args);
-
         $this->assertInstanceOf(Collection::class, $response);
     }
 
@@ -90,7 +89,48 @@ class ContactServiceTest extends TestCase
             ->andReturn($contact)
             ->once();
 
-        $this->service->createContact($contactDTO->toArray());
+        $response = $this->service->createContact($contactDTO->toArray());
+        $this->assertInstanceOf(Contact::class, $response);
+    }
+
+    public function testShouldReceiveFieldToUpdateAndReturnContact(): void
+    {
+        $oldPhoneNumber = $this->faker->phoneNumber();
+        $contact = Contact::factory()->make(
+            [
+                'id' => $this->faker->randomNumber(2, true),
+                'phone_number' => $oldPhoneNumber,
+            ]
+        );
+
+        $this->repository
+            ->shouldReceive('find')
+            ->with($contact->id)
+            ->andReturn($contact)
+            ->once();
+
+        $contactUpd = Contact::factory()->make($contact->toArray());
+        $contactUpd->phone_number = $this->faker->phoneNumber();
+
+        $updateValues = [
+            'id' => $contact->id,
+            'phone_number' => $this->faker->phoneNumber(),
+        ];
+
+        $this->repository
+            ->shouldReceive('update')
+            ->withArgs(function ($model) use ($updateValues) {
+                return 
+                    $model->phone_number === data_get($updateValues, 'phone_number') &&
+                    $model->id === data_get($updateValues, 'id');
+            })
+            ->andReturn($contactUpd)
+            ->once();
+        
+        $response = $this->service->updateContact($updateValues);
+
+        $this->assertInstanceOf(Contact::class, $response);
+        $this->assertNotSame($oldPhoneNumber, $response->phone_number);
     }
 
     public static function findSimpleResult(): array

@@ -25,4 +25,10 @@ interface ContactRepository
      * @return \App\Models\Contact
      */
     public function create(ContactDTO $contact): Contact;
+
+    /**
+     * @param Contact $contact object model contact to update in database
+     * @return \App\Models\Contact
+     */
+    public function update(Contact $contact): Contact;
 }

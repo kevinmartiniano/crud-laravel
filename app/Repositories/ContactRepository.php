@@ -24,4 +24,11 @@ class ContactRepository implements Contract
     {
         return Contact::create($contact->toArray());
     }
+
+    public function update(Contact $contact): Contact
+    {
+        $contact->save();
+
+        return $contact;
+    }
 }

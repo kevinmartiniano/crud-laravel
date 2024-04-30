@@ -59,4 +59,15 @@ class ContactService
 
         return $this->contactRepository->create($contact);
     }
+
+    public function updateContact(array $args): Contact
+    {
+        $contact = $this->findContact(data_get($args, 'id'));
+
+        collect($args)->each(function ($value, $field) use ($contact) {
+            $contact->$field = $value;
+        });
+
+        return $this->contactRepository->update($contact);
+    }
 }
