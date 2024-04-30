@@ -103,6 +103,8 @@ class ContactServiceTest extends TestCase
             ]
         );
 
+        $updatedAt = $contact->updated_at;
+
         $this->repository
             ->shouldReceive('find')
             ->with($contact->id)
@@ -130,7 +132,40 @@ class ContactServiceTest extends TestCase
         $response = $this->service->updateContact($updateValues);
 
         $this->assertInstanceOf(Contact::class, $response);
+        $this->assertNotSame($contact, $response);
         $this->assertNotSame($oldPhoneNumber, $response->phone_number);
+    }
+
+    public function testShouldNotReceiveFieldToUpdateAndReturnSameContact(): void
+    {
+        $contact = Contact::factory()->make(
+            [
+                'id' => $this->faker->randomNumber(2, true),
+            ]
+        );
+
+        $this->repository
+            ->shouldReceive('find')
+            ->with($contact->id)
+            ->andReturn($contact)
+            ->once();
+        
+        $updateValues = [
+            'id' => $contact->id,
+        ];
+
+        $this->repository
+            ->shouldReceive('update')
+            ->withArgs(function ($model) use ($updateValues) {
+                return $model->id === data_get($updateValues, 'id');
+            })
+            ->andReturn($contact)
+            ->once();
+        
+        $response = $this->service->updateContact($updateValues);
+
+        $this->assertInstanceOf(Contact::class, $response);
+        $this->assertSame($contact, $response);
     }
 
     public static function findSimpleResult(): array
