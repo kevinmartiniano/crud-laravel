@@ -86,7 +86,7 @@ class ListContactControllerTest extends TestCase
         $service->shouldReceive('findByArgs')
             ->andThrows($exception)
             ->once();
-        
+
         Log::shouldReceive('error')
             ->with(
                 'error_list_contact_controller',

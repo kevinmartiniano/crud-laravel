@@ -13,8 +13,7 @@ class ContactService
 {
     public function __construct(
         private ContactRepository $contactRepository
-    )
-    {
+    ) {
     }
 
     public function findContact(int $id): ?Contact

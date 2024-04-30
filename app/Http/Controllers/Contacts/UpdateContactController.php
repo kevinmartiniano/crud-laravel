@@ -14,8 +14,7 @@ class UpdateContactController extends Controller
 {
     public function __construct(
         private ContactService $service
-    )
-    {
+    ) {
     }
 
     public function __invoke(UpdateContactRequest $request): JsonResponse

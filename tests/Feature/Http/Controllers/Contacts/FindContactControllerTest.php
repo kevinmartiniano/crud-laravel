@@ -42,7 +42,7 @@ class FindContactControllerTest extends TestCase
                 'deleted_at',
             ],
         ]);
-        
+
         $responseContact = data_get(json_decode($response->content(), true), 'data');
         $this->assertEquals($contact->toArray(), $responseContact);
     }
@@ -60,7 +60,7 @@ class FindContactControllerTest extends TestCase
     public function testShouldReceiveIdentifierAndReturnException(): void
     {
         $id = $this->faker->randomNumber(1);
-        
+
         $service = Mockery::mock(ContactService::class)->makePartial();
         $this->app->instance(ContactService::class, $service);
 
@@ -69,7 +69,7 @@ class FindContactControllerTest extends TestCase
             ->with($id)
             ->andThrows($exception)
             ->once();
-        
+
         Log::shouldReceive('error')
             ->with(
                 'error_find_contact_controller',

@@ -63,7 +63,6 @@ class CreateContactControllerTest extends TestCase
             'Content-Type' => 'application/json',
         ];
 
-        
         $exception = new Exception();
 
         $service = Mockery::mock(ContactService::class)->makePartial();
@@ -71,7 +70,7 @@ class CreateContactControllerTest extends TestCase
             ->with($contact->toArray())
             ->andThrows($exception)
             ->once();
-        
+
         $this->app->instance(ContactService::class, $service);
 
         Log::shouldReceive('error')

@@ -14,8 +14,7 @@ class FilterListContactDTO implements Contract
         private ?string $phoneNumber,
         private ?string $mobileNumber,
         private ?string $email
-    )
-    {
+    ) {
     }
 
     public function getId(): ?int

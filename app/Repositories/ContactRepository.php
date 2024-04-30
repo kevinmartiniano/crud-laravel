@@ -27,7 +27,7 @@ class ContactRepository implements Contract
 
     public function update(Contact $contact): Contact
     {
-        if ($contact->isDirty()){
+        if ($contact->isDirty()) {
             $contact->save();
         }
 

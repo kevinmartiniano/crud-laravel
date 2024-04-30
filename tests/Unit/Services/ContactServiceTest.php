@@ -21,7 +21,7 @@ class ContactServiceTest extends TestCase
 
     private MockInterface $repository;
     private ContactService $service;
-    
+
     protected function setUp(): void
     {
         parent::setUp();
@@ -122,13 +122,13 @@ class ContactServiceTest extends TestCase
         $this->repository
             ->shouldReceive('update')
             ->withArgs(function ($model) use ($updateValues) {
-                return 
+                return
                     $model->phone_number === data_get($updateValues, 'phone_number') &&
                     $model->id === data_get($updateValues, 'id');
             })
             ->andReturn($contactUpd)
             ->once();
-        
+
         $response = $this->service->updateContact($contact->id, $updateValues);
 
         $this->assertInstanceOf(Contact::class, $response);

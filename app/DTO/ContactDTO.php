@@ -15,8 +15,7 @@ class ContactDTO implements Contract
         private ?string $mobileNumber,
         private ?string $email,
         private ?Carbon $birthDate
-    )
-    {
+    ) {
     }
 
     public function getFirstName(): ?string
@@ -34,7 +33,7 @@ class ContactDTO implements Contract
         return $this->company;
     }
 
-    function getPhoneNumber(): ?string
+    public function getPhoneNumber(): ?string
     {
         return $this->phoneNumber;
     }

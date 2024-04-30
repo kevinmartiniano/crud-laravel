@@ -75,7 +75,7 @@ class UpdateContactControllerTest extends TestCase
         $update = [
             'mobile_number' => $this->faker->phoneNumber(),
         ];
-        
+
         $exception = new Exception();
 
         $service = Mockery::mock(ContactService::class)->makePartial();
@@ -83,7 +83,7 @@ class UpdateContactControllerTest extends TestCase
             ->with($contact->id, $update)
             ->andThrows($exception)
             ->once();
-        
+
         $this->app->instance(ContactService::class, $service);
 
         Log::shouldReceive('error')

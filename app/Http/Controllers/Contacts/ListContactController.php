@@ -14,8 +14,7 @@ class ListContactController extends Controller
 {
     public function __construct(
         private ContactService $service
-    )
-    {
+    ) {
     }
 
     public function __invoke(ListContactRequest $request): JsonResponse
