@@ -54,7 +54,7 @@ class CreateContactControllerTest extends TestCase
         $this->assertDatabaseHas('contacts', $contact->toArray());
     }
 
-    public function testShouldRequestCreateEmptyRequiredFieldAndReturnErrorStatus(): void
+    public function testShouldRequestCreateContactAndReturnErrorStatus(): void
     {
         $contact = Contact::factory()->make();
 
